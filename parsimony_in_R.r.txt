@@ -1,0 +1,24 @@
+
+Parsimony Analysis in R
+
+library("phangorn")
+library("ape")  
+primates = read.phyDat("chars2.txt", format="phylip", type="DNA")  
+dm = dist.dna(as.DNAbin(primates))  
+treeUPGMA = upgma(dm)                    
+treeNJ = NJ(dm)  
+layout(matrix(c(1,2)), height=c(1,1.25)) # plot window dimensions 
+par(mar = c(.1,.1,.1,.1))  # adjust margins
+plot(treeUPGMA, main="UPGMA", cex = 0.8)  # rooted tree on top; cex adjusts text size
+plot(treeNJ, "unrooted", main="NJ", cex = 0.5) # unrooted tree on bottom
+parsimony(treeUPGMA, primates)
+parsimony(treeNJ, primates)
+optParsUPGMA = optim.parsimony(treeUPGMA, primates)
+optParsNJ = optim.parsimony(treeNJ, primates)
+plot(optParsUPGMA, main="UPGMA", cex = 0.8) # rooted tree on top
+plot(optParsNJ, "unrooted", main="NJ", cex = 0.5) # unrooted tree on bottom
+write.tree(optParsUPGMA, file="optParsUPGMA.nex")
+
+
+https://wiki.duke.edu/display/AnthroTree/2.2+Simple+Parsimony+Analysis+in+R
+
